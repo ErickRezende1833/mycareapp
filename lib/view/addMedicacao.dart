@@ -6,16 +6,28 @@ class AddMedicacao extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("aaaa"),),
+      appBar: AppBar(title: Text("aaaa")),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: Icon(Icons.add),),
-      body: Padding(padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          CustomTextField(labelText: "aaa", hintText: "ddd")
-        ],
-      ),)
+        child: Icon(Icons.add),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            CustomTextField(labelText: "aaa", hintText: "ddd"),
+            ElevatedButton.icon(
+              onPressed: () {},
+              icon: Icon(Icons.add, size: 18),
+              label: Text("Salvar"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                )
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -24,7 +36,7 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     required this.labelText,
-    required this.hintText
+    required this.hintText,
   });
 
   final String labelText;
@@ -33,12 +45,12 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              labelText: labelText,
-              hintText: hintText
-            ),
-          );
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: labelText,
+        hintText: hintText,
+      ),
+    );
   }
 }
 
