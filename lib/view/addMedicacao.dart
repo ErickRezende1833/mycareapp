@@ -16,15 +16,7 @@ class AddMedicacao extends StatelessWidget {
         child: Column(
           children: [
             CustomTextField(labelText: "aaa", hintText: "ddd"),
-            ElevatedButton.icon(
-              onPressed: () {},
-              icon: Icon(Icons.add, size: 18),
-              label: Text("Salvar"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                )
-            ),
+            CustomElevatedButton(onPressed: (){}, icon: Icons.add, label: "Salvar")
           ],
         ),
       ),
@@ -54,4 +46,30 @@ class CustomTextField extends StatelessWidget {
   }
 }
 
+class CustomElevatedButton extends StatelessWidget {
+  const CustomElevatedButton({
+    super.key,
+    required this.onPressed,
+    required this.icon,
+    required this.label,
+  });
+  
+  final VoidCallback onPressed;
+  final IconData icon;
+  final String label;
 
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+              onPressed: () {},
+              icon: Icon(icon, size: 18),
+              label: Text(label),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                )
+            );
+  }
+
+  
+}
