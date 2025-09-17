@@ -1,0 +1,19 @@
+import 'package:flutter/material.dart';
+
+class Medicacao {
+ 
+  var int id;
+  var String nome;
+  var String dose;
+  var TimeOfDay hora;
+  var bool isTomado;
+
+ 
+  Medicacao({
+    this.id,
+    this.name,
+    this.dosage,
+    this.time,
+    this.isTaken = false, 
+  });
+}
