@@ -15,16 +15,22 @@ class AddMedicacao extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             Text(
               "Adicionar lembrete",
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 20,
                 fontWeight: FontWeight.bold
               ),
             ),
+            
+            SizedBox(height: 10,),
             CustomTextField(labelText: "aaa", hintText: "ddd"),
+            SizedBox(height: 10,),
+            CustomTextField(labelText: "aaa", hintText: "ddd"),
+            SizedBox(height: 10,),
+
             Expanded(
               child: Container(),
             ),
