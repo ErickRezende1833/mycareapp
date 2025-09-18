@@ -16,11 +16,14 @@ class AddMedicacao extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            Text("aaa"),
             CustomTextField(labelText: "aaa", hintText: "ddd"),
             CustomElevatedButton(onPressed: (){}, icon: Icons.add, label: "Salvar")
+            
           ],
         ),
       ),
+      bottomNavigationBar: CustomBottomNavigationBar()
     );
   }
 }
@@ -72,5 +75,41 @@ class CustomElevatedButton extends StatelessWidget {
             );
   }
 
-  
 }
+
+class CustomBottomNavigationBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+  type: BottomNavigationBarType.fixed,
+  backgroundColor: Color(0xFF6200EE),
+  selectedItemColor: Colors.white,
+  unselectedItemColor: Colors.white.withOpacity(.60),
+  selectedFontSize: 14,
+  unselectedFontSize: 14,
+  onTap: (value) {
+    // Respond to item press.
+  },
+  items: [
+    BottomNavigationBarItem(
+      label: 'Favorites',
+      icon: Icon(Icons.alarm_add),
+    ),
+    BottomNavigationBarItem(
+      label: 'Favorites',
+      icon: Icon(Icons.music_note),
+    ),
+    BottomNavigationBarItem(
+      label: 'Favorites',
+      icon: Icon(Icons.location_on),
+    ),
+    BottomNavigationBarItem(
+      label: 'Favorites',
+      icon: Icon(Icons.library_books),
+    ),
+  ],
+);
+  }
+}
+
+

@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: AddMedicacao(), // Altere esta linha para exibir a tela de cadastro
+      home: AddMedicacao(),
     );
   }
 }
