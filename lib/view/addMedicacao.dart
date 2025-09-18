@@ -6,10 +6,11 @@ class AddMedicacao extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("aaaa")),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
+      appBar: AppBar(title: Image.asset(
+        'images/logotipo.png',
+        height: 40,
+      ),
+      centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
