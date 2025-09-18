@@ -25,7 +25,13 @@ class AddMedicacao extends StatelessWidget {
               ),
             ),
             CustomTextField(labelText: "aaa", hintText: "ddd"),
-            CustomElevatedButton(onPressed: (){}, icon: Icons.add, label: "Salvar")
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomElevatedButton(onPressed: (){}, icon: Icons.add, label: "Salvar"),
+                CustomElevatedButton(onPressed: (){}, icon: Icons.add, label: "Salvar")
+              ],
+            ),
           ],
         ),
       ),
