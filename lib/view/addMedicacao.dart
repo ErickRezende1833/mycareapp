@@ -7,10 +7,10 @@ class AddMedicacao extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Image.asset(
-        'images/logotipo.png',
-        height: 40,
-      ),
-      centerTitle: true,
+          'images/logotipo.png',
+          height: 40,
+        ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -21,7 +21,7 @@ class AddMedicacao extends StatelessWidget {
               "Adicionar lembrete",
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold
+                fontWeight: FontWeight.bold,
               ),
             ),
             
@@ -30,6 +30,8 @@ class AddMedicacao extends StatelessWidget {
             SizedBox(height: 10,),
             CustomTextField(labelText: "aaa", hintText: "ddd"),
             SizedBox(height: 10,),
+
+            const CustomTimePickerField(labelText: "Horário da medicação"),
 
             Expanded(
               child: Container(),
@@ -44,7 +46,59 @@ class AddMedicacao extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar()
+      bottomNavigationBar: const CustomBottomNavigationBar(),
+    );
+  }
+}
+
+class CustomTimePickerField extends StatefulWidget {
+  final String labelText;
+
+  const CustomTimePickerField({
+    Key? key,
+    required this.labelText,
+  }) : super(key: key);
+
+  @override
+  State<CustomTimePickerField> createState() => _CustomTimePickerFieldState();
+}
+
+class _CustomTimePickerFieldState extends State<CustomTimePickerField> {
+  TimeOfDay? selectedTime;
+  final TextEditingController _controller = TextEditingController();
+
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedTime ?? TimeOfDay.now(),
+      initialEntryMode: TimePickerEntryMode.input,
+    );
+
+    if (picked != null) {
+      setState(() {
+        selectedTime = picked;
+        _controller.text = selectedTime!.format(context);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: _controller,
+      readOnly: true,
+      onTap: () => _selectTime(context),
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: widget.labelText,
+        suffixIcon: const Icon(Icons.access_time),
+      ),
     );
   }
 }
@@ -55,22 +109,22 @@ class CustomIconButton extends StatelessWidget {
     required this.onPressed,
     required this.icon,
   });
-  
+
   final VoidCallback onPressed;
   final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: (){}, 
-      icon: Icon(icon, size: 18),
-      style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 233, 233, 233),
-                foregroundColor: Colors.blue,
-                shape: const CircleBorder(),
-                minimumSize: const Size.fromRadius(24),
-                )
-      );
+      onPressed: onPressed,
+      icon: Icon(icon, size: 24),
+      style: IconButton.styleFrom(
+        backgroundColor: const Color.fromARGB(255, 233, 233, 233),
+        foregroundColor: Colors.blue,
+        shape: const CircleBorder(),
+        minimumSize: const Size.fromRadius(24),
+      ),
+    );
   }
 }
 
@@ -103,7 +157,7 @@ class CustomElevatedButton extends StatelessWidget {
     required this.icon,
     required this.label,
   });
-  
+
   final VoidCallback onPressed;
   final IconData icon;
   final String label;
@@ -111,53 +165,51 @@ class CustomElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-              onPressed: () {},
-              icon: Icon(icon, size: 18),
-              label: Text(label),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                fixedSize: const Size.fromHeight(48),
-                )
-            );
+      onPressed: onPressed,
+      icon: Icon(icon, size: 18),
+      label: Text(label),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        fixedSize: const Size.fromHeight(48),
+      ),
+    );
   }
-
 }
 
 class CustomBottomNavigationBar extends StatelessWidget {
+  const CustomBottomNavigationBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-  type: BottomNavigationBarType.fixed,
-  //backgroundColor: Color(0xFF6200EE),
-  backgroundColor: Colors.blue,
-  selectedItemColor: Colors.white,
-  unselectedItemColor: Colors.white.withOpacity(.60),
-  selectedFontSize: 14,
-  unselectedFontSize: 14,
-  onTap: (value) {
-    // Respond to item press.
-  },
-  items: [
-    BottomNavigationBarItem(
-      label: 'Lembretes',
-      icon: Icon(Icons.alarm),
-    ),
-    BottomNavigationBarItem(
-      label: 'Adicionar',
-      icon: Icon(Icons.alarm_add),
-    ),
-    BottomNavigationBarItem(
-      label: 'Dados Vitais',
-      icon: Icon(Icons.monitor_heart),
-    ),
-    BottomNavigationBarItem(
-      label: 'Agenda',
-      icon: Icon(Icons.calendar_today),
-    ),
-  ],
-);
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Colors.blue,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white.withOpacity(.60),
+      selectedFontSize: 14,
+      unselectedFontSize: 14,
+      onTap: (value) {
+        // Lógica para navegação
+      },
+      items: const [
+        BottomNavigationBarItem(
+          label: 'Lembretes',
+          icon: Icon(Icons.alarm),
+        ),
+        BottomNavigationBarItem(
+          label: 'Adicionar',
+          icon: Icon(Icons.alarm_add),
+        ),
+        BottomNavigationBarItem(
+          label: 'Dados Vitais',
+          icon: Icon(Icons.monitor_heart),
+        ),
+        BottomNavigationBarItem(
+          label: 'Agenda',
+          icon: Icon(Icons.calendar_today),
+        ),
+      ],
+    );
   }
 }
-
-
