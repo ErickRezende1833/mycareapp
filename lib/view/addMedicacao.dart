@@ -16,7 +16,7 @@ class AddMedicacao extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text("aaa"),
+            
             CustomTextField(labelText: "aaa", hintText: "ddd"),
             CustomElevatedButton(onPressed: (){}, icon: Icons.add, label: "Salvar")
             
@@ -82,7 +82,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
   type: BottomNavigationBarType.fixed,
-  backgroundColor: Color(0xFF6200EE),
+  //backgroundColor: Color(0xFF6200EE),
+  backgroundColor: Colors.blue,
   selectedItemColor: Colors.white,
   unselectedItemColor: Colors.white.withOpacity(.60),
   selectedFontSize: 14,
@@ -92,20 +93,20 @@ class CustomBottomNavigationBar extends StatelessWidget {
   },
   items: [
     BottomNavigationBarItem(
-      label: 'Favorites',
+      label: 'Lembretes',
+      icon: Icon(Icons.alarm),
+    ),
+    BottomNavigationBarItem(
+      label: 'Adicionar',
       icon: Icon(Icons.alarm_add),
     ),
     BottomNavigationBarItem(
-      label: 'Favorites',
-      icon: Icon(Icons.music_note),
+      label: 'Dados Vitais',
+      icon: Icon(Icons.monitor_heart),
     ),
     BottomNavigationBarItem(
-      label: 'Favorites',
-      icon: Icon(Icons.location_on),
-    ),
-    BottomNavigationBarItem(
-      label: 'Favorites',
-      icon: Icon(Icons.library_books),
+      label: 'Agenda',
+      icon: Icon(Icons.calendar_today),
     ),
   ],
 );
