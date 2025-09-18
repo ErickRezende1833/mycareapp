@@ -25,10 +25,13 @@ class AddMedicacao extends StatelessWidget {
               ),
             ),
             CustomTextField(labelText: "aaa", hintText: "ddd"),
+            Expanded(
+              child: Container(),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomElevatedButton(onPressed: (){}, icon: Icons.add, label: "Salvar"),
+                CustomIconButton(onPressed: (){}, icon: Icons.delete_forever_outlined),
                 CustomElevatedButton(onPressed: (){}, icon: Icons.add, label: "Salvar")
               ],
             ),
@@ -37,6 +40,31 @@ class AddMedicacao extends StatelessWidget {
       ),
       bottomNavigationBar: CustomBottomNavigationBar()
     );
+  }
+}
+
+class CustomIconButton extends StatelessWidget {
+  const CustomIconButton({
+    super.key,
+    required this.onPressed,
+    required this.icon,
+  });
+  
+  final VoidCallback onPressed;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: (){}, 
+      icon: Icon(icon, size: 18),
+      style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 233, 233, 233),
+                foregroundColor: Colors.blue,
+                shape: const CircleBorder(),
+                minimumSize: const Size.fromRadius(24),
+                )
+      );
   }
 }
 
@@ -83,6 +111,7 @@ class CustomElevatedButton extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
+                fixedSize: const Size.fromHeight(48),
                 )
             );
   }
