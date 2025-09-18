@@ -10,6 +10,7 @@ class AddMedicacao extends StatelessWidget {
           'images/logotipo.png',
           height: 40,
         ),
+        backgroundColor: Colors.white,
         centerTitle: true,
       ),
       body: Padding(
