@@ -17,9 +17,15 @@ class AddMedicacao extends StatelessWidget {
         child: Column(
           children: [
             
+            Text(
+              "Adicionar lembrete",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold
+              ),
+            ),
             CustomTextField(labelText: "aaa", hintText: "ddd"),
             CustomElevatedButton(onPressed: (){}, icon: Icons.add, label: "Salvar")
-            
           ],
         ),
       ),
