@@ -26,9 +26,9 @@ class AddMedicacao extends StatelessWidget {
             ),
             
             SizedBox(height: 10,),
-            CustomTextField(labelText: "aaa", hintText: "ddd"),
+            CustomTextField(labelText: "Nome do medicamento", hintText: ""),
             SizedBox(height: 10,),
-            CustomTextField(labelText: "aaa", hintText: "ddd"),
+            CustomTextField(labelText: "Dose", hintText: "(ex: 100ml/1 comprimido)"),
             SizedBox(height: 10,),
 
             const CustomTimePickerField(labelText: "Horário da medicação"),
@@ -51,6 +51,8 @@ class AddMedicacao extends StatelessWidget {
   }
 }
 
+//campo com timepicker
+
 class CustomTimePickerField extends StatefulWidget {
   final String labelText;
 
@@ -70,17 +72,30 @@ class _CustomTimePickerFieldState extends State<CustomTimePickerField> {
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: selectedTime ?? TimeOfDay.now(),
-      initialEntryMode: TimePickerEntryMode.input,
-    );
+    initialTime: selectedTime ?? TimeOfDay.now(),
+    initialEntryMode: TimePickerEntryMode.input,
+    builder: (BuildContext context, Widget? child) {
+      return Theme(
+        data: ThemeData.light().copyWith(
+          colorScheme: const ColorScheme.light(
+            surface: Colors.white, 
+            primary: Colors.blue, 
+            onSurface: Colors.black87, 
+            onPrimary: Colors.white, 
+          ),
+        ),
+        child: child!,
+      );
+    },
+  );
 
-    if (picked != null) {
-      setState(() {
-        selectedTime = picked;
-        _controller.text = selectedTime!.format(context);
-      });
-    }
+  if (picked != null) {
+    setState(() {
+      selectedTime = picked;
+      _controller.text = selectedTime!.format(context);
+    });
   }
+}
 
   @override
   void dispose() {
@@ -102,6 +117,8 @@ class _CustomTimePickerFieldState extends State<CustomTimePickerField> {
     );
   }
 }
+
+//botão com icon
 
 class CustomIconButton extends StatelessWidget {
   const CustomIconButton({
@@ -128,6 +145,8 @@ class CustomIconButton extends StatelessWidget {
   }
 }
 
+//campo de texto
+
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
@@ -142,13 +161,14 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       decoration: InputDecoration(
-        border: const OutlineInputBorder(),
         labelText: labelText,
         hintText: hintText,
       ),
     );
   }
 }
+
+//botão com icon e label
 
 class CustomElevatedButton extends StatelessWidget {
   const CustomElevatedButton({
@@ -176,6 +196,8 @@ class CustomElevatedButton extends StatelessWidget {
     );
   }
 }
+
+//navbar inferior
 
 class CustomBottomNavigationBar extends StatelessWidget {
   const CustomBottomNavigationBar({super.key});
