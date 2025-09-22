@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AddMedicacao extends StatelessWidget {
-  const AddMedicacao({super.key});
+class ViewAddMedicacao extends StatelessWidget {
+  const ViewAddMedicacao({super.key});
 
   @override
   Widget build(BuildContext context) {
