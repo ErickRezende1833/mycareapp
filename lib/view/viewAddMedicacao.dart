@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/medicacao.dart'; 
 
 class ViewAddMedicacao extends StatelessWidget {
   const ViewAddMedicacao({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final TextEditingController _nomeController = TextEditingController();
+    final TextEditingController _doseController = TextEditingController();
+    TimeOfDay? _horarioSelecionado;
+
     return Scaffold(
-      appBar: AppBar(title: Image.asset(
+      appBar: AppBar(
+        title: Image.asset(
           'images/logotipo.png',
           height: 40,
         ),
@@ -18,21 +25,34 @@ class ViewAddMedicacao extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Adicionar lembrete",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            
-            SizedBox(height: 10,),
-            CustomTextField(labelText: "Nome do medicamento", hintText: ""),
-            SizedBox(height: 10,),
-            CustomTextField(labelText: "Dose", hintText: "(ex: 100ml/1 comprimido)"),
-            SizedBox(height: 10,),
 
-            const CustomTimePickerField(labelText: "Horário da medicação"),
+            const SizedBox(height: 10,),
+            CustomTextField(
+              controller: _nomeController,
+              labelText: "Nome do medicamento",
+              hintText: "",
+            ),
+            const SizedBox(height: 10,),
+            CustomTextField(
+              controller: _doseController,
+              labelText: "Dose",
+              hintText: "(ex: 100ml/1 comprimido)",
+            ),
+            const SizedBox(height: 10,),
+
+            CustomTimePickerField(
+              labelText: "Horário da medicação",
+              onTimeSelected: (time) {
+                _horarioSelecionado = time;
+              },
+            ),
 
             Expanded(
               child: Container(),
@@ -40,8 +60,35 @@ class ViewAddMedicacao extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomIconButton(onPressed: (){}, icon: Icons.delete_forever_outlined),
-                CustomElevatedButton(onPressed: (){}, icon: Icons.add, label: "Salvar")
+                CustomIconButton(
+                  onPressed: () {
+                    Navigator.pop(context); 
+                  }, 
+                  icon: Icons.delete_forever_outlined,
+                  color: Colors.blue,
+                ),
+                CustomElevatedButton(
+                  onPressed: () {
+                    if (_nomeController.text.isEmpty ||
+                        _doseController.text.isEmpty ||
+                        _horarioSelecionado == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Por favor, preencha todos os campos.')),
+                      );
+                      return;
+                    }
+
+                    final novaMedicacao = Medicacao(
+                      nome: _nomeController.text,
+                      dose: _doseController.text,
+                      horario: _horarioSelecionado!,
+                    );
+
+                    Navigator.pop(context, novaMedicacao);
+                  },
+                  icon: Icons.add,
+                  label: "Salvar",
+                )
               ],
             ),
           ],
@@ -56,10 +103,12 @@ class ViewAddMedicacao extends StatelessWidget {
 
 class CustomTimePickerField extends StatefulWidget {
   final String labelText;
+  final ValueChanged<TimeOfDay?> onTimeSelected;
 
   const CustomTimePickerField({
     Key? key,
     required this.labelText,
+    required this.onTimeSelected,
   }) : super(key: key);
 
   @override
@@ -73,30 +122,31 @@ class _CustomTimePickerFieldState extends State<CustomTimePickerField> {
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-    initialTime: selectedTime ?? TimeOfDay.now(),
-    initialEntryMode: TimePickerEntryMode.input,
-    builder: (BuildContext context, Widget? child) {
-      return Theme(
-        data: ThemeData.light().copyWith(
-          colorScheme: const ColorScheme.light(
-            surface: Colors.white, 
-            primary: Colors.blue, 
-            onSurface: Colors.black87, 
-            onPrimary: Colors.white, 
+      initialTime: selectedTime ?? TimeOfDay.now(),
+      initialEntryMode: TimePickerEntryMode.input,
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: const ColorScheme.light(
+              surface: Colors.white,
+              primary: Colors.blue,
+              onSurface: Colors.black87,
+              onPrimary: Colors.white,
+            ),
           ),
-        ),
-        child: child!,
-      );
-    },
-  );
+          child: child!,
+        );
+      },
+    );
 
-  if (picked != null) {
-    setState(() {
-      selectedTime = picked;
-      _controller.text = selectedTime!.format(context);
-    });
+    if (picked != null) {
+      setState(() {
+        selectedTime = picked;
+        _controller.text = picked.format(context);
+      });
+      widget.onTimeSelected(selectedTime);
+    }
   }
-}
 
   @override
   void dispose() {
@@ -110,10 +160,9 @@ class _CustomTimePickerFieldState extends State<CustomTimePickerField> {
       controller: _controller,
       readOnly: true,
       onTap: () => _selectTime(context),
-      decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        labelText: widget.labelText,
-        suffixIcon: const Icon(Icons.access_time),
+      decoration: const InputDecoration(
+        labelText: "Horário da medicação",
+        suffixIcon: Icon(Icons.access_time),
       ),
     );
   }
@@ -126,10 +175,12 @@ class CustomIconButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.icon,
+    this.color = Colors.blue,
   });
 
   final VoidCallback onPressed;
   final IconData icon;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +189,7 @@ class CustomIconButton extends StatelessWidget {
       icon: Icon(icon, size: 24),
       style: IconButton.styleFrom(
         backgroundColor: const Color.fromARGB(255, 233, 233, 233),
-        foregroundColor: Colors.blue,
+        foregroundColor: color,
         shape: const CircleBorder(),
         minimumSize: const Size.fromRadius(24),
       ),
@@ -153,14 +204,16 @@ class CustomTextField extends StatelessWidget {
     super.key,
     required this.labelText,
     required this.hintText,
+    this.controller,
   });
 
   final String labelText;
   final String hintText;
-
+  final TextEditingController? controller; 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
@@ -213,7 +266,6 @@ class CustomBottomNavigationBar extends StatelessWidget {
       selectedFontSize: 14,
       unselectedFontSize: 14,
       onTap: (value) {
-        // Lógica para navegação
       },
       items: const [
         BottomNavigationBarItem(
