@@ -1,15 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/medicacao.dart'; 
+import 'package:flutter_application_1/view/viewMedicacao.dart'; 
 
-class ViewAddMedicacao extends StatelessWidget {
+class ViewAddMedicacao extends StatefulWidget {
   const ViewAddMedicacao({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<ViewAddMedicacao> createState() => _ViewAddMedicacaoState();
+}
 
-    final TextEditingController _nomeController = TextEditingController();
-    final TextEditingController _doseController = TextEditingController();
-    TimeOfDay? _horarioSelecionado;
+class _ViewAddMedicacaoState extends State<ViewAddMedicacao> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _doseController = TextEditingController();
+  TimeOfDay? _horarioSelecionado;
+  bool _isLoading = false;
+
+  void _submitForm() async {
+    if (_isLoading) return;
+
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      await Future.delayed(const Duration(seconds: 1));
+
+      final novaMedicacao = Medicacao(
+        nome: _nomeController.text,
+        dose: _doseController.text,
+        horario: _horarioSelecionado!,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Medicamento adicionado com sucesso!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+      Navigator.pop(context, novaMedicacao);
+    }
+  }
+
+  @override
+  void dispose() {
+    _nomeController.dispose();
+    _doseController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
@@ -20,81 +61,82 @@ class ViewAddMedicacao extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Adicionar lembrete",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Adicionar lembrete",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                      controller: _nomeController,
+                      labelText: "Nome do medicamento",
+                      hintText: "",
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'O nome do medicamento é obrigatório.';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                      controller: _doseController,
+                      labelText: "Dose",
+                      hintText: "(ex: 100ml/1 comprimido)",
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'A dose é obrigatória.';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    CustomTimePickerField(
+                      labelText: "Horário da medicação",
+                      onTimeSelected: (time) {
+                        _horarioSelecionado = time;
+                      },
+                      validator: (value) {
+                        if (_horarioSelecionado == null) {
+                          return 'O horário é obrigatório.';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomIconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icons.arrow_back,
+                          color: Colors.blue,
+                        ),
+                        CustomElevatedButton(
+                          onPressed: _submitForm,
+                          icon: Icons.save,
+                          label: "Salvar",
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-
-            const SizedBox(height: 10,),
-            CustomTextField(
-              controller: _nomeController,
-              labelText: "Nome do medicamento",
-              hintText: "",
-            ),
-            const SizedBox(height: 10,),
-            CustomTextField(
-              controller: _doseController,
-              labelText: "Dose",
-              hintText: "(ex: 100ml/1 comprimido)",
-            ),
-            const SizedBox(height: 10,),
-
-            CustomTimePickerField(
-              labelText: "Horário da medicação",
-              onTimeSelected: (time) {
-                _horarioSelecionado = time;
-              },
-            ),
-
-            Expanded(
-              child: Container(),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomIconButton(
-                  onPressed: () {
-                    Navigator.pop(context); 
-                  }, 
-                  icon: Icons.delete_forever_outlined,
-                  color: Colors.blue,
-                ),
-                CustomElevatedButton(
-                  onPressed: () {
-                    if (_nomeController.text.isEmpty ||
-                        _doseController.text.isEmpty ||
-                        _horarioSelecionado == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Por favor, preencha todos os campos.')),
-                      );
-                      return;
-                    }
-
-                    final novaMedicacao = Medicacao(
-                      nome: _nomeController.text,
-                      dose: _doseController.text,
-                      horario: _horarioSelecionado!,
-                    );
-
-                    Navigator.pop(context, novaMedicacao);
-                  },
-                  icon: Icons.add,
-                  label: "Salvar",
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: const CustomBottomNavigationBar(),
+      bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 0),
     );
   }
 }
@@ -104,11 +146,13 @@ class ViewAddMedicacao extends StatelessWidget {
 class CustomTimePickerField extends StatefulWidget {
   final String labelText;
   final ValueChanged<TimeOfDay?> onTimeSelected;
+  final String? Function(String?)? validator;
 
   const CustomTimePickerField({
     Key? key,
     required this.labelText,
     required this.onTimeSelected,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -160,9 +204,10 @@ class _CustomTimePickerFieldState extends State<CustomTimePickerField> {
       controller: _controller,
       readOnly: true,
       onTap: () => _selectTime(context),
-      decoration: const InputDecoration(
-        labelText: "Horário da medicação",
-        suffixIcon: Icon(Icons.access_time),
+      validator: widget.validator,
+      decoration: InputDecoration(
+        labelText: widget.labelText,
+        suffixIcon: const Icon(Icons.access_time),
       ),
     );
   }
@@ -205,15 +250,19 @@ class CustomTextField extends StatelessWidget {
     required this.labelText,
     required this.hintText,
     this.controller,
+    this.validator,
   });
 
   final String labelText;
   final String hintText;
-  final TextEditingController? controller; 
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      validator: validator,
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
@@ -253,38 +302,3 @@ class CustomElevatedButton extends StatelessWidget {
 
 //navbar inferior
 
-class CustomBottomNavigationBar extends StatelessWidget {
-  const CustomBottomNavigationBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.blue,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.white.withOpacity(.60),
-      selectedFontSize: 14,
-      unselectedFontSize: 14,
-      onTap: (value) {
-      },
-      items: const [
-        BottomNavigationBarItem(
-          label: 'Lembretes',
-          icon: Icon(Icons.alarm),
-        ),
-        BottomNavigationBarItem(
-          label: 'Adicionar',
-          icon: Icon(Icons.alarm_add),
-        ),
-        BottomNavigationBarItem(
-          label: 'Dados Vitais',
-          icon: Icon(Icons.monitor_heart),
-        ),
-        BottomNavigationBarItem(
-          label: 'Agenda',
-          icon: Icon(Icons.calendar_today),
-        ),
-      ],
-    );
-  }
-}

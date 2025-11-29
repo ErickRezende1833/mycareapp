@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/medicacao.dart'; // Usando medicacao.dart
+import 'package:flutter_application_1/theme/appTheme.dart';
+import 'package:flutter_application_1/models/medicacao.dart'; 
 import 'package:flutter_application_1/view/viewAddMedicacao.dart';
+import 'package:flutter_application_1/utils/app_routes.dart';
 import 'package:flutter_application_1/models/historicoAcao.dart';
 
 class ViewMedicacao extends StatefulWidget {
@@ -43,19 +45,37 @@ class _ViewMedicacaoState extends State<ViewMedicacao> {
     setState(() {
       final novaAcao = HistoricoAcao(
         nomeMedicamento: medicacao.nome,
-        horarioPrevisto: medicacao.horario, 
+        horarioPrevisto: medicacao.horario,
         tomada: tomada,
         registro: DateTime.now(),
       );
-      
+
       _historicoAcoes.insert(0, novaAcao);
     });
+
+    // Feedback ao usuário
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Registro de ${medicacao.nome} como ${tomada ? "Tomado" : "Não Tomado"} adicionado ao histórico.',
+        ),
+        backgroundColor: tomada ? Colors.green : Colors.red,
+      ),
+    );
   }
 
   void _removerMedicacao(Medicacao medicacao) {
     setState(() {
       _minhasMedicacoes.remove(medicacao);
     });
+
+    // Feedback ao usuário
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Medicamento ${medicacao.nome} removido com sucesso.'),
+        backgroundColor: Colors.orange,
+      ),
+    );
   }
 
   @override
@@ -65,6 +85,44 @@ class _ViewMedicacaoState extends State<ViewMedicacao> {
         title: Image.asset('images/logotipo.png', height: 40),
         backgroundColor: Colors.white,
         centerTitle: true,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blue),
+              child: Text(
+                'MyCareApp Menu',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Perfil'),
+              onTap: () {
+                Navigator.pop(context); // Fecha o drawer
+                Navigator.of(context).pushNamed(AppRoutes.PERFIL);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.help),
+              title: const Text('Ajuda'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).pushNamed(AppRoutes.AJUDA);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Sair/Login'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).pushNamed(AppRoutes.LOGIN);
+              },
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -85,20 +143,20 @@ class _ViewMedicacaoState extends State<ViewMedicacao> {
                   final med = _minhasMedicacoes[index];
                   return MedicamentoCard(
                     medicacao: med,
-                    onAction: _registrarAcao,   
-                    onRemove: _removerMedicacao, 
+                    onAction: _registrarAcao,
+                    onRemove: _removerMedicacao,
                   );
                 },
               ),
             ),
-            
+
             const SizedBox(height: 15),
             const Text(
               "Histórico",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
-            
+
             SizedBox(
               height: 150,
               child: ListView.builder(
@@ -124,17 +182,16 @@ class _ViewMedicacaoState extends State<ViewMedicacao> {
           ],
         ),
       ),
-      bottomNavigationBar: const CustomBottomNavigationBar(),
+      bottomNavigationBar: const CustomBottomNavigationBar(currentIndex: 0),
     );
   }
 }
-
 
 //CARD DE MEDICAMENTO
 
 class MedicamentoCard extends StatelessWidget {
   final Medicacao medicacao;
-  final Function(Medicacao, bool) onAction; 
+  final Function(Medicacao, bool) onAction;
   final Function(Medicacao) onRemove;
 
   const MedicamentoCard({
@@ -146,97 +203,94 @@ class MedicamentoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color cardColor = Color.fromARGB(255, 230, 230, 230); 
-
-    return Container(
-      padding: const EdgeInsets.all(12),
+    return Card(
+      elevation: 1,
       margin: const EdgeInsets.symmetric(vertical: 5),
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: 55,
-              height: 55,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 55,
+                height: 55,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  medicacao.horaFormatada,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
-              child: Text(
-                medicacao.horaFormatada,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(width: 12),
-        
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    medicacao.nome,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+              const SizedBox(width: 12),
+
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      medicacao.nome,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                  Text(
-                    medicacao.dose,
-                    style: const TextStyle(fontSize: 12, color: Colors.black54),
+                    Text(
+                      medicacao.dose,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  const Text("Tomei?"),
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      CustomIconButton(
+                        onPressed: () => onAction(medicacao, true),
+                        icon: Icons.check,
+                        color: AppTheme.secondaryColor,
+                      ),
+                      const SizedBox(width: 8),
+                      CustomIconButton(
+                        onPressed: () => onAction(medicacao, false),
+                        icon: Icons.close,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                      const SizedBox(width: 20),
+                    ],
                   ),
                 ],
               ),
-            ),
-            
-            Column(
-              children: [
-                const Text("Tomei?"),
-                const SizedBox(height: 5),
-                Row(
-                  children: [
-                    CustomIconButton(
-                      onPressed: () => onAction(medicacao, true),
-                      icon: Icons.check,
-                      color: Colors.green,
-                    ),
-                    const SizedBox(width: 8),
-                    CustomIconButton(
-                      onPressed: () => onAction(medicacao, false),
-                      icon: Icons.close,
-                      color: Colors.red,
-                    ),
-                    const SizedBox(width: 20),
-                 
-                  ],
-                ),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomIconButton(
-                      onPressed: () => onRemove(medicacao),
-                      icon: Icons.delete_forever_outlined,
-                      color: Colors.blueGrey,
-                    )
-              ],
-            )
-          ],
+
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomIconButton(
+                    onPressed: () => onRemove(medicacao),
+                    icon: Icons.delete_forever_outlined,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-
 // CARD DE HISTÓRICO
-
 
 class HistoricoCard extends StatelessWidget {
   final HistoricoAcao acao;
@@ -245,49 +299,58 @@ class HistoricoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color cardColor = acao.tomada ? Colors.green[200]! : Colors.red[200]!;
+    final Color cardColor = acao.tomada
+        ? AppTheme.secondaryColor.withOpacity(0.2)
+        : Theme.of(context).colorScheme.error.withOpacity(0.2);
     final String statusText = acao.tomada ? "Tomou" : "Não Tomou";
 
-    return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.symmetric(vertical: 2),
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                acao.nomeMedicamento,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-              ),
-              Text(
-                "Previsto: ${acao.horaFormatadaPrevista}",
-                style: const TextStyle(fontSize: 10, color: Colors.black54),
-              ),
-            ],
-          ),
-          
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                statusText,
-                style: TextStyle(
+    return Card(
+      elevation: 0,
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      color: cardColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  acao.nomeMedicamento,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: acao.tomada ? Colors.green[800] : Colors.red[800]),
-              ),
-              Text(
-                "${acao.dataHoraFormatadaRegistro}",
-                style: const TextStyle(fontSize: 10, color: Colors.black54),
-              ),
-            ],
-          ),
-        ],
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  "Previsto: ${acao.horaFormatadaPrevista}",
+                  style: const TextStyle(fontSize: 10, color: Colors.black54),
+                ),
+              ],
+            ),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  statusText,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: acao.tomada
+                        ? AppTheme.secondaryColor
+                        : Theme.of(context).colorScheme.error,
+                  ),
+                ),
+                Text(
+                  "${acao.dataHoraFormatadaRegistro}",
+                  style: const TextStyle(fontSize: 10, color: Colors.black54),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -313,7 +376,7 @@ class CustomIconButton extends StatelessWidget {
       onPressed: onPressed,
       icon: Icon(icon, size: 24),
       style: IconButton.styleFrom(
-        backgroundColor: const Color.fromARGB(255, 233, 233, 233),
+        backgroundColor: AppTheme.backgroundColor,
         foregroundColor: color,
         shape: const CircleBorder(),
         minimumSize: const Size.fromRadius(24),
@@ -342,11 +405,7 @@ class CustomElevatedButton extends StatelessWidget {
       onPressed: onPressed,
       icon: Icon(icon, size: 18),
       label: Text(label),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        fixedSize: const Size.fromHeight(48),
-      ),
+      style: ElevatedButton.styleFrom(fixedSize: const Size.fromHeight(48)),
     );
   }
 }
@@ -372,9 +431,10 @@ class RevCustomElevatedButton extends StatelessWidget {
       icon: Icon(icon, size: 18),
       label: Text(label),
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color.fromARGB(255, 233, 233, 233),
-        foregroundColor: Colors.blue,
+        backgroundColor: AppTheme.backgroundColor,
+        foregroundColor: AppTheme.primaryColor,
         fixedSize: const Size.fromHeight(48),
+        side: const BorderSide(color: AppTheme.primaryColor),
       ),
     );
   }
@@ -383,24 +443,45 @@ class RevCustomElevatedButton extends StatelessWidget {
 //navbar inferior
 
 class CustomBottomNavigationBar extends StatelessWidget {
-  const CustomBottomNavigationBar({super.key});
+  final int currentIndex;
+
+  const CustomBottomNavigationBar({super.key, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      currentIndex: currentIndex,
       type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.blue,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.white.withOpacity(.60),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      selectedItemColor: Theme.of(context).colorScheme.onPrimary,
+      unselectedItemColor: Theme.of(
+        context,
+      ).colorScheme.onPrimary.withOpacity(.60),
       selectedFontSize: 14,
       unselectedFontSize: 14,
-      onTap: (value) {},
-      items: const [
-        BottomNavigationBarItem(label: 'Lembretes', icon: Icon(Icons.alarm)),
+      onTap: (index) {
+        if (index == currentIndex) return;
+        switch (index) {
+          case 0:
+            Navigator.of(context).pushReplacementNamed(AppRoutes.HOME);
+            break;
+          case 1:
+            Navigator.of(context).pushReplacementNamed(AppRoutes.LEMBRETES);
+            break;
+          case 2:
+            Navigator.of(context).pushReplacementNamed(AppRoutes.DADOS_VITAIS);
+            break;
+          case 3:
+            Navigator.of(context).pushReplacementNamed(AppRoutes.AGENDA);
+            break;
+        }
+      },
+      items: [
         BottomNavigationBarItem(
-          label: 'Adicionar',
-          icon: Icon(Icons.alarm_add),
+          label: 'Medicamentos',
+          icon: Icon(Icons.medication),
         ),
+        BottomNavigationBarItem(label: 'Lembretes', icon: Icon(Icons.alarm)),
         BottomNavigationBarItem(
           label: 'Dados Vitais',
           icon: Icon(Icons.monitor_heart),
