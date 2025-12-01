@@ -85,9 +85,9 @@ class _DadosVitaisScreenState extends State<DadosVitaisScreen> {
       appBar: AppBar(
         title: const Text(
           "Dados Vitais",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: Colors.white,
         centerTitle: true,
       ),
       body: _dados.isEmpty
@@ -130,10 +130,10 @@ class _DadosVitaisScreenState extends State<DadosVitaisScreen> {
         onPressed: _irParaRegistrar,
         label: const Text("Registrar"),
         icon: const Icon(Icons.add),
-        backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 240, 242, 243),
+        foregroundColor: AppTheme.primaryColor,
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 2),
+      bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 1),
     );
   }
 }

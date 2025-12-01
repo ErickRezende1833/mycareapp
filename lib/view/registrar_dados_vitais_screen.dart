@@ -36,7 +36,7 @@ class _RegistrarDadosVitaisScreenState extends State<RegistrarDadosVitaisScreen>
         cor: tipoInfo['cor'],
       );
 
-      Navigator.pop(context, dado); // retorna apenas um dado
+      Navigator.pop(context, dado); 
     }
   }
 
@@ -55,9 +55,10 @@ class _RegistrarDadosVitaisScreenState extends State<RegistrarDadosVitaisScreen>
     return Scaffold(
       appBar: AppBar(
         title: const Text("Registrar Dado Vital"),
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: Colors.white,
+        foregroundColor: AppTheme.primaryColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white), 
+          icon: const Icon(Icons.arrow_back, color: AppTheme.primaryColor), 
           onPressed: () => Navigator.pop(context),
         ),
       ),

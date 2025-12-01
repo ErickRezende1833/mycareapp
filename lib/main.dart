@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/view/add_event_screen.dart';
 import 'package:flutter_application_1/view/viewAddMedicacao.dart';
 import 'package:flutter_application_1/utils/app_routes.dart';
-import 'package:flutter_application_1/view/lembretes_screen.dart';
 import 'package:flutter_application_1/view/dados_vitais_screen.dart';
 import 'package:flutter_application_1/view/agenda_screen.dart';
 import 'package:flutter_application_1/view/perfil_screen.dart';
@@ -33,7 +32,6 @@ class MyApp extends StatelessWidget {
       routes: {
         AppRoutes.HOME: (context) => const ViewMedicacao(),
         AppRoutes.ADD_MEDICACAO: (context) => const ViewAddMedicacao(),
-        AppRoutes.LEMBRETES: (context) => const LembretesScreen(),
         AppRoutes.DADOS_VITAIS: (context) => const DadosVitaisScreen(),
         AppRoutes.AGENDA: (context) => const AgendaScreen(),
         AppRoutes.PERFIL: (context) => const PerfilScreen(),

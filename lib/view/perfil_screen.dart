@@ -24,7 +24,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
   @override
   void initState() {
     super.initState();
-    // Inicializa os controllers com os dados do perfil estático
     _nomeController = TextEditingController(text: Perfil.nome);
     _telefoneController = TextEditingController(text: Perfil.telefone);
     _emailController = TextEditingController(text: Perfil.email);
