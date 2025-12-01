@@ -29,9 +29,18 @@ O MyCareApp inclui as seguintes funcionalidades essenciais:
     *   Componentes reutilizáveis (Cards, Botões, Campos de Texto) que seguem o design system.
     *   Uso de armazenamento de dados simples (lista local em memória), conforme especificado para o MVP.
 
-## Capturas de Tela ou Vídeo de Demonstração
+## Capturas de Tela
 
-*(Esta seção deve ser preenchida manualmente com capturas de tela do aplicativo em execução para a entrega final.)*
+<img width="502" height="912" alt="AddDadosVitais" src="https://github.com/user-attachments/assets/729d602e-947b-48c1-8aa7-d8d642834051" />
+<img width="501" height="916" alt="AddAgenda" src="https://github.com/user-attachments/assets/8b2e38c5-0bcd-47d0-808a-aaa981a4b985" />
+<img width="503" height="915" alt="Perfil" src="https://github.com/user-attachments/assets/6720bac6-61df-4ce8-8a3c-432a87087daa" />
+<img width="503" height="918" alt="Medicacao" src="https://github.com/user-attachments/assets/3001a07e-ec7e-499e-8091-6f6d6a810600" />
+<img width="501" height="914" alt="Login" src="https://github.com/user-attachments/assets/aff6c2be-493d-4311-8e75-7cee824575fd" />
+<img width="503" height="919" alt="DadosVitais" src="https://github.com/user-attachments/assets/90fe5404-0058-4403-94a3-ca22b8fc8a85" />
+<img width="499" height="917" alt="Ajuda" src="https://github.com/user-attachments/assets/1e85c670-7169-493d-8f43-3f15d453de4f" />
+<img width="501" height="911" alt="Agenda" src="https://github.com/user-attachments/assets/936a6f3f-a570-4360-b93a-a64529e3bf48" />
+<img width="502" height="919" alt="AddMedicacao" src="https://github.com/user-attachments/assets/90657301-5d05-4140-a9e0-9d722f35aa7d" />
+
 
 **Exemplos de Telas a Serem Capturadas:**
 
