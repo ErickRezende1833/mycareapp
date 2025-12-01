@@ -39,8 +39,8 @@ class AjudaScreen extends StatelessWidget {
 
           SizedBox(height: 12),
 
-          Text("• Como configuro lembretes?\n"
-              "  ➤ Acesse Lembretes e cadastre o horário desejado."),
+          Text("• Como adiciono um dado vital?\n"
+              "  ➤ Acesse Dados Vitais e cadastre o dado desejado."),
 
           SizedBox(height: 12),
 
@@ -49,7 +49,6 @@ class AjudaScreen extends StatelessWidget {
         ],
       ),
 
-      // EXATAMENTE como na AgendaScreen
       bottomNavigationBar: const CustomBottomNavigationBar(currentIndex: 1),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/theme/appTheme.dart';
-import 'package:flutter_application_1/models/medicacao.dart'; 
+import 'package:flutter_application_1/models/medicacao.dart';
 import 'package:flutter_application_1/view/viewAddMedicacao.dart';
 import 'package:flutter_application_1/utils/app_routes.dart';
 import 'package:flutter_application_1/models/historicoAcao.dart';
@@ -466,12 +466,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
             Navigator.of(context).pushReplacementNamed(AppRoutes.HOME);
             break;
           case 1:
-            Navigator.of(context).pushReplacementNamed(AppRoutes.LEMBRETES);
-            break;
-          case 2:
             Navigator.of(context).pushReplacementNamed(AppRoutes.DADOS_VITAIS);
             break;
-          case 3:
+          case 2:
             Navigator.of(context).pushReplacementNamed(AppRoutes.AGENDA);
             break;
         }
@@ -481,7 +478,6 @@ class CustomBottomNavigationBar extends StatelessWidget {
           label: 'Medicamentos',
           icon: Icon(Icons.medication),
         ),
-        BottomNavigationBarItem(label: 'Lembretes', icon: Icon(Icons.alarm)),
         BottomNavigationBarItem(
           label: 'Dados Vitais',
           icon: Icon(Icons.monitor_heart),

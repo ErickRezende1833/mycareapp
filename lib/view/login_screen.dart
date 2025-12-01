@@ -16,7 +16,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _login() {
     if (_formKey.currentState!.validate()) {
-      // Aqui você poderia fazer validação real, mas vamos só navegar
       Navigator.of(context).pushReplacementNamed(AppRoutes.HOME);
     }
   }
@@ -24,6 +23,15 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+        title: Image.asset(
+          'images/logotipo.png',
+          height: 40,
+        ),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+      ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 80),
@@ -32,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             Center(
               child: Text(
-                "Manga Rosa",
+                "Faça seu Login",
                 style: TextStyle(
                   color: AppTheme.primaryColor,
                   fontSize: 32,

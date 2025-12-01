@@ -71,7 +71,7 @@ class _ViewAddMedicacaoState extends State<ViewAddMedicacao> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Adicionar lembrete",
+                      "Adicionar Medicamento",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -116,15 +116,8 @@ class _ViewAddMedicacaoState extends State<ViewAddMedicacao> {
                     ),
                     const SizedBox(height: 30),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CustomIconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icons.arrow_back,
-                          color: Colors.blue,
-                        ),
                         CustomElevatedButton(
                           onPressed: _submitForm,
                           icon: Icons.save,

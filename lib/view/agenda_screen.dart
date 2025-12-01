@@ -72,7 +72,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
     if (newEvent != null && newEvent is AgendaEvent) {
       setState(() {
         _events.add(newEvent);
-        _events.sort((a, b) => a.date.compareTo(b.date)); // Ordena por data
+        _events.sort((a, b) => a.date.compareTo(b.date)); 
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -123,14 +123,12 @@ class _AgendaScreenState extends State<AgendaScreen> {
         label: const Text('Novo Evento'),
         icon: const Icon(Icons.add),
         backgroundColor: const Color.fromARGB(255, 240, 242, 243),
-        foregroundColor: Colors.blue,
+        foregroundColor: AppTheme.primaryColor,
       ),
-      bottomNavigationBar: const CustomBottomNavigationBar(currentIndex: 3),
+      bottomNavigationBar: const CustomBottomNavigationBar(currentIndex: 2),
     );
   }
 }
-
-// Card de Evento da Agenda
 class AgendaCard extends StatelessWidget {
   final AgendaEvent event;
   final Function(AgendaEvent) onRemove;
@@ -196,7 +194,6 @@ class AgendaCard extends StatelessWidget {
                 ],
               ),
             ),
-            // Botão de remoção
             IconButton(
               icon: const Icon(Icons.delete_forever, color: Colors.red),
               onPressed: () => onRemove(event),
