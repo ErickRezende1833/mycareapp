@@ -41,14 +41,6 @@ O MyCareApp inclui as seguintes funcionalidades essenciais:
 <img width="501" height="911" alt="Agenda" src="https://github.com/user-attachments/assets/936a6f3f-a570-4360-b93a-a64529e3bf48" />
 <img width="502" height="919" alt="AddMedicacao" src="https://github.com/user-attachments/assets/90657301-5d05-4140-a9e0-9d722f35aa7d" />
 
-
-**Exemplos de Telas a Serem Capturadas:**
-
-*   **Tela Principal (Medicamentos):** Mostrando a lista de medicamentos e o histórico.
-*   **Tela Adicionar Medicamento:** Exibindo o formulário de adição com o seletor de horário.
-*   **Menu Lateral (Drawer):** Apresentando as opções de navegação secundárias.
-*   **Feedback ao Usuário:** Captura de uma SnackBar de sucesso ou erro.
-
 ## Passo a Passo de Como Executar
 
 O projeto foi desenvolvido utilizando o framework **Flutter**.
